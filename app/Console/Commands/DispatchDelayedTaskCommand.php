@@ -15,10 +15,10 @@ class DispatchDelayedTaskCommand extends Command
     {
         $delay = (int) $this->argument('delayInSeconds');
 
-        $this->info("📦 Dispatching job with {$delay} second(s) delay...");
+        $this->info("Dispatching job with {$delay} second(s) delay...");
 
         StartScheduledTasks::dispatch()->delay(now()->addSeconds($delay));
 
-        $this->info("✅ Job dispatched!");
+        $this->info("Job dispatched!");
     }
 }

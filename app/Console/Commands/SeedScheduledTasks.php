@@ -20,11 +20,11 @@ class SeedScheduledTasks extends Command
                 'title' => "Task $i",
                 'description' => "Auto-generated task $i",
                 'status' => 'todo',
-                'start_time' => Carbon::now()->subMinutes(rand(1, 10)), // already due
+                'start_time' => Carbon::now()->subMinutes(rand(1, 10)), // already due 5 random deadlines
             ]);
             $this->info("Created: {$task->title}");
         }
 
-        $this->info("✅ $count tasks seeded!");
+        $this->info("$count tasks seeded!");
     }
 }

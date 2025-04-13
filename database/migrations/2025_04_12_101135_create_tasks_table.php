@@ -19,7 +19,7 @@ class CreateTasksTable extends Migration
             $table->text('description')->nullable();
             $table->unsignedBigInteger('user_id')->nullable(); // assigned user
             $table->timestamp('start_time')->nullable();
-            $table->string('status')->default('todo'); // todo, in_progress, done
+            $table->string('status')->default('todo'); // states like: todo, in_progress, done
             $table->timestamps();
         });
     }

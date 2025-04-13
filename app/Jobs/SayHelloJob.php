@@ -14,7 +14,7 @@ class SayHelloJob implements ShouldQueue
 
     public function handle()
     {
-        \Log::info('📣 Hello from SayHelloJob!');
+        \Log::info('Hello from SayHelloJob!');
     }
 }
 

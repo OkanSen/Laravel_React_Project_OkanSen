@@ -23,11 +23,11 @@ class StartTaskNow implements ShouldQueue
 
     public function handle()
     {
-        Log::info("🛠 Handling task '{$this->task->title}'");
+        Log::info("Handling task '{$this->task->title}'");
 
         $this->task->status = 'in_progress';
         $this->task->save();
 
-        Log::info("✅ Task '{$this->task->title}' updated to in_progress");
+        Log::info("Task '{$this->task->title}' updated to in_progress");
     }
 }

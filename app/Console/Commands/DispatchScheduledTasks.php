@@ -14,6 +14,6 @@ class DispatchScheduledTasks extends Command
     {
         $this->info('Dispatching job...');
         dispatch(new StartScheduledTasks());
-        $this->info('Dispatched ✅');
+        $this->info('Dispatched.');
     }
 }
