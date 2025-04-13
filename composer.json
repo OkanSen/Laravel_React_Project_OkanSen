@@ -21,6 +21,7 @@
         "laravel/framework": "^6.0",
         "laravel/telescope": "^2.0",
         "laravel/tinker": "^1.0",
+        "laravel/ui": "1.0",
         "league/flysystem-aws-s3-v3": "^1.0",
         "spatie/laravel-backup": "^6.1",
         "tymon/jwt-auth": "1.0.0-rc.5",

@@ -55,5 +55,7 @@ Route::namespace('Api')->name('api.')->group(function () {
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskController;
 
-Route::apiResource('tasks', TaskController::class);
+Route::apiResource('tasks', \App\Http\Controllers\TaskController::class);
+
+
 
