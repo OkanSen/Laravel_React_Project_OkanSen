@@ -11,10 +11,16 @@
 |
 */
 
+use App\Http\Controllers\HomeController;
+
 Route::prefix('/{locale?}')->where(['locale' => 'en|fil'])->group(function () {
     Route::name('backoffice.')->group(function () {
-        Route::get('/', function () {
+        Route::get('/', [HomeController::class, 'index']);
+        Route::get('/env-check', function () {
+            return env('CHECK_ENV_WORKS', 'nope');
+        });
+        /*Route::get('/', function () {
             return view('__backoffice.welcome');
-        })->name('welcome');
+        })->name('welcome');*/
     });
 });

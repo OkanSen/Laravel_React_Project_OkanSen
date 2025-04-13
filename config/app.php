@@ -24,6 +24,30 @@ return [
     */
     'description' => env('APP_DESCRIPTION', 'Laravel Application'),
 
+     /*
+    |--------------------------------------------------------------------------
+    | Custom Debug Check (from .env)
+    |--------------------------------------------------------------------------
+    |
+    | This shows how to pull something like DB_USERNAME into the config
+    | so that you can safely use `config('app.db_user_check')` in your app.
+    |
+    */
+
+    'db_user_check' => env('DB_USERNAME', 'no-user-set'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Environment Variable Checker Example
+    |--------------------------------------------------------------------------
+    |
+    | You can add a fake/test key to confirm env is working correctly.
+    | This would let you check: config('app.env_debug_key')
+    |
+    */
+
+    'env_debug_key' => env('CHECK_ENV_WORKS', 'nope'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -36,6 +60,7 @@ return [
     */
 
     'env' => env('APP_ENV', 'production'),
+    'watched_you_config_key' => env('DB_USERNAME'),
 
     /*
     |--------------------------------------------------------------------------
@@ -183,7 +208,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
-        App\Providers\TelescopeServiceProvider::class,
+        //App\Providers\TelescopeServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
     ],
 
