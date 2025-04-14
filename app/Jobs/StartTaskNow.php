@@ -17,6 +17,13 @@ class StartTaskNow implements ShouldQueue
 
     public $task;
 
+    protected $statusFlow = [
+        'Pending' => 'In Progress',
+        'In Progress' => 'Needs Revision',
+        'Needs Revision' => 'Completed',
+        'Completed' => null, // Final state
+    ];
+
     public function __construct(Task $task)
     {
         $this->task = $task;
@@ -24,20 +31,28 @@ class StartTaskNow implements ShouldQueue
 
     public function handle()
     {
-        Log::info("Handling task '{$this->task->title}' (ID: {$this->task->id})");
+        $currentStatus = $this->task->status;
+        $nextStatus = $this->statusFlow[$currentStatus] ?? null;
 
-        $this->task->status = 'in_progress';
+        Log::info("⏳ Handling task '{$this->task->title}' (ID: {$this->task->id}) | Current status: {$currentStatus}");
+
+        if (!$nextStatus) {
+            Log::info("✅ Task '{$this->task->title}' (ID: {$this->task->id}) is already in its final state: '{$currentStatus}'");
+            return;
+        }
+
+        $this->task->status = $nextStatus;
         $this->task->save();
 
-        $user = $this->task->user; // assumes Task has `user()` relation
+        Log::info("🔁 Task '{$this->task->title}' status updated: '{$currentStatus}' → '{$nextStatus}'");
+
+        $user = $this->task->user;
 
         if ($user) {
             $user->notify(new TaskStatusChanged($this->task));
-            Log::info("Notification sent to user ID {$user->id} ({$user->email}) for task '{$this->task->title}'");
+            Log::info("📩 Notification sent to user ID {$user->id} ({$user->email})");
         } else {
-            Log::warning("No user found for task '{$this->task->title}' (ID: {$this->task->id})");
+            Log::warning("⚠️ No user found for task '{$this->task->title}' (ID: {$this->task->id})");
         }
-
-        Log::info("Task '{$this->task->title}' updated to 'in_progress'");
     }
 }

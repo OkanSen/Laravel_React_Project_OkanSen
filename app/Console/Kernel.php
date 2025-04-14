@@ -26,8 +26,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-
-        $schedule->job(new StartScheduledTasks)->everyMinute();
+        $schedule->command('smart:tasks')->everyMinute();
+        //$schedule->job(new StartScheduledTasks)->everyMinute();
     }
 
     /**
