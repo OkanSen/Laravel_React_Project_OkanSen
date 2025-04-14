@@ -7,14 +7,17 @@ const TaskForm = ({ task, onSuccess }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [startTime, setStartTime] = useState('');
-  const [status, setStatus] = useState('pending');
+  //const [status, setStatus] = useState('pending');
+  const [status, setStatus] = useState(task?.status || 'Pending');
 
   useEffect(() => {
     if (isEdit) {
       setTitle(task.title || '');
       setDescription(task.description || '');
       setStartTime(task.start_time ? task.start_time.slice(0, 16) : '');
-      setStatus(task.status || 'pending');
+      setStatus(task.status || 'Pending'); 
+      console.log('Editing status:', task?.status);
+
     }
   }, [task]);
 
@@ -97,9 +100,10 @@ const TaskForm = ({ task, onSuccess }) => {
 
       <label>Status</label>
       <select value={status} onChange={(e) => setStatus(e.target.value)}>
-        <option value="pending">Pending</option>
-        <option value="in_progress">In Progress</option>
-        <option value="completed">Completed</option>
+        <option value="Pending">Pending</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Needs Revision">Needs Revision</option>
+        <option value="Completed">Completed</option>
       </select>
 
       <div className="form-buttons">

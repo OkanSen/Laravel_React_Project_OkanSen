@@ -7,30 +7,50 @@ import '../styles/dashboard.scss';
 const TaskDashboard = () => {
   const [tasks, setTasks] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [selectedTask, setSelectedTask] = useState(null); // <-- NEW
+  const [selectedTask, setSelectedTask] = useState(null);
 
   const fetchTasks = async () => {
     try {
       const response = await fetch('/api/tasks');
       const data = await response.json();
-      setTasks(data?.data || []); // ensure it's an array
+      setTasks(data?.data || []);
     } catch (error) {
       console.error('Error fetching tasks:', error);
       setTasks([]);
     }
   };
 
+  const handleStatusChange = async (taskId, newStatus) => {
+    try {
+      await fetch(`/api/tasks/${taskId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify({ status: newStatus }),
+      });
+  
+      fetchTasks(); // Refresh tasks after update
+    } catch (error) {
+      console.error('Error updating task status:', error);
+    }
+  };
+  
+
   useEffect(() => {
     fetchTasks();
   }, []);
 
+  // create mode
   const openCreateModal = () => {
-    setSelectedTask(null);     // create mode
+    setSelectedTask(null);     
     setShowModal(true);
   };
 
+  // edit mode
   const openEditModal = (task) => {
-    setSelectedTask(task);     // edit mode
+    setSelectedTask(task);     
     setShowModal(true);
   };
 
@@ -38,7 +58,11 @@ const TaskDashboard = () => {
     <div className="dashboard-container">
       <h1>Task Dashboard</h1>
 
-      <KanbanBoard tasks={tasks} onEdit={openEditModal} />
+      <KanbanBoard 
+        tasks={tasks} 
+        onEdit={openEditModal}
+        onStatusChange={handleStatusChange}
+      />
 
       {/*<div className="task-list">
         {tasks.map((task) => (

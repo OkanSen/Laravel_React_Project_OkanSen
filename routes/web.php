@@ -18,5 +18,5 @@ Route::prefix('/{locale?}')->where(['locale' => 'en|fil'])->group(function () {
     });
 });
 
-// ✅ Redirect /dashboard to /en/dashboard if locale is missing
+// Redirect /dashboard to /en/dashboard if locale is missing
 Route::redirect('/dashboard', '/en/dashboard');
