@@ -1,131 +1,248 @@
-# About Laravel React Admin
+## Turkish version is below the English version...
 
-This is a scaffolding project that comes with authentication &
-users CRUD. It is a Single Page Application (SPA) built on top of [React.js](https://reactjs.org)
-in the frontend & [Laravel](https://laravel.com) in the backend.
 
-<p align="center">
-    <a href="https://github.com/palonponjovertlota/laravel-react-admin/actions" title="Actions">
-        <img src="https://github.com/palonponjovertlota/laravel-react-admin/workflows/Actions/badge.svg" alt="Build Status">
-    </a>
-    <a href="https://github.com/palonponjovertlota/laravel-react-admin/releases" title="Releases">
-        <img src="https://img.shields.io/github/v/release/palonponjovertlota/laravel-react-admin?label=Release" alt="Latest Version">
-    </a>
-    <a href="https://github.com/palonponjovertlota/laravel-react-admin/blob/master/LICENSE" title="License">
-        <img src="https://img.shields.io/github/license/palonponjovertlota/laravel-react-admin?label=License" alt="License">
-    </a>
-</p>
 
-## Screenshots
 
-[![Laravel React Admin](https://user-images.githubusercontent.com/42484695/65893634-d9534700-e3da-11e9-84a1-20de8c6b4ced.png)](https://github.com/palonponjovertlota/laravel-react-admin)
-
-[![Laravel React Admin](https://user-images.githubusercontent.com/42484695/65893636-d9534700-e3da-11e9-91c1-0d098a5e4301.png)](https://github.com/palonponjovertlota/laravel-react-admin)
+## Flalingo Task - Laravel React Admin Extension _ OKAN SEN
+This project adds a Task Management Module to the Laravel React Admin panel. It enables users to create, edit, and track tasks. Additionally, tasks can start automatically based on their scheduled time, with support for smart status progression.
 
 ## Features
+- Create, update, delete tasks
 
--   Progressive Web App (PWA)
--   Supports multiple locales
--   Stateless authentication system
--   Datatables with server-side pagination, sorting & dynamic filtering
--   Undo common actions
--   [Docker](https://www.docker.com) ready
--   [Image Intervention](http://image.intervention.io/) integration for image uploads
--   Drag & drop file uploads.
--   Supports dark mode.
+- Assign start time to tasks
 
-## Preview
+- Queue-based automatic task starting (via Laravel Jobs)
 
-You can check out the [live preview](https://laravel-react-admin.herokuapp.com)
+- Notifications to users on task status change (email-based)
 
-## Quick Start
+- Smart task lifecycle:
+Pending → In Progress → Needs Revision → Completed
 
-1. Clone the repo `git clone https://github.com/palonponjovertlota/laravel-react-admin.git`.
-2. Go to your project folder from your terminal.
-3. Run: `composer install` and `npm install` to install application dependencies.
-4. Copy the `env.example` file into a `.env` file and then configure based on your local setup.
-5. Installation is done, you can now run: `php artisan serve` then `npm run watch`.
-6. The project will run in this URL: (http://localhost:3000).
+- Drag & Drop Kanban board
 
-## Using Docker
+- Fixes N+1 query issues via eager loading
 
-If you prefer [Docker](https://www.docker.com), there is a working setup provided to get you started in no time.
-Check your local setup to make sure that running this app in docker will work correctly:
+- Mail notifications using Laravel Notifications and Google SMTP
 
-### For Unix Based Operating Systems, Give It Proper Permissions
+## API Endpoints
+Endpoint	            Method	        Description
+/api/tasks	            GET	            List all tasks
+/api/tasks	            POST	        Create new task
+/api/tasks/{id}	        GET	            Get a specific task
+/api/tasks/{id}	        PUT	            Update a task
+/api/tasks/{id}	        DELETE	        Delete a task
 
-If you are a **Linux** / **Mac** user, make sure to give the application proper _file permissions_. The _php-fpm_ image uses `www-data` as its default user:
 
-```
-cd ~/your_projects_folder
+## Known Issues / Missing Features
+- Tasks cannot have multiple assigned users yet (only one user supported, also the user assignment must be manually done through the database dashboard such as phpmyadmin).
 
-sudo chown ${USER}:www-data -R laravel-react-admin
-```
+- No user-specific filtering — all tasks are globally listed.
 
-### Localhost Should Be Freed
+- No role-based task deletion restrictions — anyone can delete for now.
 
-Make sure that the address `127.0.0.1:80` usually `localhost` is available on the _host machine_. It must be assured that **apache2**, **nginx** or any http webserver out there is not running on the _host machine_ to avoid address and port collision.
+- No Swagger/Postman API documentation.
 
-### Add a custom host
+- Statuses are currently hardcoded in some areas (no centralized config).
 
-To make this app run on **docker** you must add a custom host address pointing to `localhost` or `127.0.0.1`.
+- No advanced frontend optimization (e.g., React memoization).
 
-### You are good to go
+- Drag-and-drop may behave unexpectedly because task order is based on task ID, not custom order.
 
-You can now run the _image_ using the `docker-compose up` and optionally pass the `--build` flag if you intend to build the image. The app can be visited here `http:your_custom_host_address`.
+## Status Flow Logic
+Tasks move through these states automatically when their start_time is reached:
 
-### Installing PHP & NPM dependencies
+Pending → In Progress → Needs Revision → Completed
 
-In development, do note that all files inside this app is _bind-mounted_ into the container, **docker** will just use the existing directories, in our concern the `vendor` and `node_modules`. Here is an example of running a composer install command: `docker container exec -it laravel-react-admin-php-fpm composer install --no-interaction --no-plugins --no-scripts`.
+## Setup Guide
+1. Clone the Repo
 
-### Running Artisan Commands
+git clone https://github.com/OkanSen/Laravel_React_Project_OkanSen.git
+cd laravel-react-admin
 
-You can run any artisan commands directly into the `laravel-react-admin-php-fpm` container. Here is an example of a migration command: `docker container exec -it laravel-react-admin-php-fpm php artisan migrate:fresh --seed`.
 
-### What about Browsersync?
+2. Install Dependencies
+Laravel backend:
 
-As we are bundling frontend assets with [webpack](https://webpack.js.org/) under the hood, you must specify the custom host address where the application runs in docker so that webpack can proxy that to be able to develop using docker. You can pass a `--env.proxy` flag when running for example the `npm run watch` command: `npm run watch -- --env.proxy=http:laravel-react-admin.test`.
+composer install
 
-### Using PhpMyAdmin
 
-You could use **PhpMyAdmin** to browse your MySql database as it is included in this **Docker** integration. Just add a _Virtual Host_ that points to `127.0.0.1` & the _Domain_ should be the same with your custom host address:
+React frontend:
 
-```
-// /etc/hosts
+npm install
 
-127.0.0.1    phpmyadmin.laravel-react-admin.test
-```
 
-You could then visit **PhpMyAdmin** here: phpmyadmin.laravel-react-admin.test
+3. Environment Setup
 
-## Testing
+cp .env.example .env
+php artisan key:generate
+Edit .env to match your DB configuration.
 
-Run the tests with:
+4. Database Migrations & Seeding
 
-```
-// If you have installed composer globally
-composer test
+php artisan migrate
+php artisan db:seed
 
-// This should also work
-./vendor/bin/composer test
-```
+After running StatusesSeeder, you'll have the following default statuses: Pending, In Progress, Needs Revision, Completed
 
-## Changelog
+5. Build Frontend
 
-Please see [CHANGELOG](https://github.com/palonponjovertlota/laravel-react-admin/blob/master/CHANGELOG.md) for more information on what has changed recently.
+npm run dev
+# or
+npm run production
 
-## Contributing
 
-Please see [Contributing](https://github.com/palonponjovertlota/laravel-react-admin/blob/master/Contributing.md) for more details.
+6. Queue Worker & Smart Scheduler
+Start the queue worker:
 
-## Security
+php artisan queue:work
 
-If you discover any security-related issues, please email [palonponjovertlota@gmail.com](mailto:palonponjovertlota@gmail.com) instead of using the issue tracker.
 
-## Credits
+Dispatch smart tasks manually:
 
--   [@reeshkeed](https://github.com/reeshkeed) for designing the logo & design ideas.
+php artisan job:dispatch-smart
+Run smart dispatcher every minute (optional):
 
-## License
+while true; do php artisan job:dispatch-smart; sleep 60; done
 
-The MIT License (MIT). Please see [License File](https://github.com/palonponjovertlota/laravel-react-admin/blob/master/LICENSE) for more information.
+
+
+
+
+
+
+
+
+
+
+# Flalingo Task - Laravel React Admin Extension _ OKAN SEN
+
+Bu proje, Laravel React Admin paneline bir "Görev Yönetimi Modülü" eklemek amacıyla geliştirilmiştir. Kullanıcıların görev oluşturabileceği, düzenleyebileceği ve takip edebileceği bir yapı sunar. Ek olarak görevlerin başlangıç zamanına göre otomatik başlatılması ve statü geçişleri desteklenmektedir.
+
+---
+
+## Özellikler
+
+- Görev oluşturma, düzenleme, silme
+- Görevlere başlangıç zamanı atayabilme
+- Queue job sistemi ile zamanında görev başlatma
+- Görev statüsü değişiminde anlık bildirim gönderimi(Laravel Notifications & Automated Mail)
+- Akıllı görev yönetimi (statü geçişleri: Pending → In Progress → Needs Revision → Completed)
+- Drag & Drop destekli Kanban Board
+- Eager Loading ile N+1 problemi çözümü
+- Laravel Notifications ile kullanıcıya mail gönderimi
+
+---
+
+## Kurulum ve Kullanım
+Aşağıda detaylı açıklama var...
+
+### Queue Worker Başlatma:
+php artisan queue:work
+php artisan job:dispatch-smart (bu one-shot usage için)
+while true; do php artisan job:dispatch-smart; sleep 60; done (sürekli looplaması için bu kullanılabilir)
+
+## API Endpoint'leri
+Endpoint		    Method		Açıklama
+/api/tasks		    GET		    Tüm görevleri listeler
+/api/tasks		    POST		Yeni görev oluşturur
+/api/tasks/{id}		GET		    Belirli görevi getirir
+/api/tasks/{id}		PUT		    Görevi günceller
+/api/tasks/{id}		DELETE		Görevi siler
+
+## Bilinen Sorunlar ve Eksiklikler
+ Task'lere atanan kişi (user) çoklu seçilemiyor. Frontend'de sadece tek kullanıcı için alan mevcut - bu da şimdilik sadece database dashboard'dan yapılabiliyor.
+
+ Kullanıcı bazlı görev filtrelemesi yok. Dashboard tüm görevleri listeliyor.
+
+ Görev silme sadece owner'lara kısıtlanmadı (şimdilik herkes silebilir).
+
+ API dokümantasyonu Postman veya Swagger formatında hazırlanmadı.
+
+ Görev statüleri sabit bir yerden çekilmiyor şu anda, back-end ve front-ende düzenleme gerektirdiğinden bazı yerlerde hardcoded statü tipleri.
+
+ Memoization gibi ileri seviye frontend optimizasyonları uygulanmadı.
+
+Task Dashboard üzerinde şimdilik bütün task'ler id'leri üzerinden sıralandığı için darg and drop'tan sonra ilginç düzenlemeler görülebilir. Id bazlı sıralamadan dolayı gerçekleşiyor bunlar (örneğin: task sıralarının drag and droplandığı sütunun içinde sırasını değiştirmesi, sütun sıralarının deişmesi gibi)
+
+
+
+## Statü Geçiş Sistemi
+Görevler aşağıdaki sırayla otomatik güncellenir:
+
+Pending → In Progress → Needs Revision → Completed
+
+
+
+## Ek Bilgiler
+Branch: feature/flaling-task
+
+Laravel Versiyon: 6.20.45
+
+Node Version: >=12.x önerilir
+
+Task modülü full responsive ve React Kanban board tabanlıdır.
+
+## Geliştirici Notları
+Bu projede zaman kısıtlı olduğundan dolayı bazı özellikler temel seviyede bırakıldı, ancak sistem genişletilmeye uygun olarak yapılandırıldı. İleride rollere göre yetkilendirme, kullanıcı bazlı görev gösterimi ve görev geçmişi gibi alanlar kolayca eklenebilir.
+
+## Kurulum
+Aşağıdaki adımlar, projeyi yerel ortamınızda çalıştırmak için gereklidir:
+
+1. Reponun Klonlanması
+
+git clone https://github.com/OkanSen/Laravel_React_Project_OkanSen.git
+cd laravel-react-admin
+
+
+2. Gerekli Paketlerin Kurulumu
+Backend (Laravel) için:
+
+composer install
+
+
+Frontend (React) için:
+
+npm install
+
+
+
+3. .env Dosyasının Oluşturulması
+
+cp .env.example .env
+php artisan key:generate
+
+
+.env dosyasında veritabanı bağlantısı gibi bilgileri doldurmayı unutmayın.
+
+4. Veritabanı Migrasyon ve Seed
+
+php artisan migrate
+php artisan db:seed
+
+
+StatusesSeeder çalıştıktan sonra varsayılan statüler: Pending, In Progress, Needs Revision, Completed
+
+5. Frontend Derleme
+
+npm run dev
+
+
+# veya prod ortamı için
+npm run production
+
+
+6. Queue Worker ve Zamanlayıcı Başlatma
+Queue worker'ı başlat:
+
+php artisan queue:work
+
+
+
+Akıllı görev zamanlayıcısını çalıştır (manuel):
+
+php artisan job:dispatch-smart
+
+
+Otomatik olarak her dakika çalıştırmak için (opsiyonel):
+
+while true; do php artisan job:dispatch-smart; sleep 60; done
