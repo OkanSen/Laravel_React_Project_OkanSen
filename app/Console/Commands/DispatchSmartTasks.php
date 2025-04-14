@@ -31,12 +31,12 @@ class DispatchSmartTasks extends Command
 
             if ($delay <= 0) {
                 dispatch(new StartTaskNow($task));
-                Log::info("🚀 Dispatched task '{$task->title}' immediately (ID {$task->id})");
-                $this->info("✔️ Dispatched '{$task->title}' immediately");
+                Log::info("Dispatched task '{$task->title}' immediately (ID {$task->id})");
+                $this->info("Dispatched '{$task->title}' immediately");
             } else {
                 dispatch((new StartTaskNow($task))->delay($delay));
-                Log::info("🕒 Scheduled task '{$task->title}' to run in {$delay}s (ID {$task->id})");
-                $this->info("⏳ Scheduled '{$task->title}' in {$delay} seconds");
+                Log::info("Scheduled task '{$task->title}' to run in {$delay}s (ID {$task->id})");
+                $this->info("Scheduled '{$task->title}' in {$delay} seconds");
             }
 
             $dispatchedCount++;
@@ -44,9 +44,9 @@ class DispatchSmartTasks extends Command
 
         if ($dispatchedCount === 0) {
             $this->warn("No eligible tasks found to dispatch.");
-            Log::info("🛑 No eligible tasks to dispatch at {$now}");
+            Log::info("No eligible tasks to dispatch at {$now}");
         } else {
-            $this->line("✅ Total dispatched: {$dispatchedCount}");
+            $this->line("Total dispatched: {$dispatchedCount}");
         }
     }
 }

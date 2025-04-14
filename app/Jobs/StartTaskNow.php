@@ -34,25 +34,25 @@ class StartTaskNow implements ShouldQueue
         $currentStatus = $this->task->status;
         $nextStatus = $this->statusFlow[$currentStatus] ?? null;
 
-        Log::info("⏳ Handling task '{$this->task->title}' (ID: {$this->task->id}) | Current status: {$currentStatus}");
+        Log::info("Handling task '{$this->task->title}' (ID: {$this->task->id}) | Current status: {$currentStatus}");
 
         if (!$nextStatus) {
-            Log::info("✅ Task '{$this->task->title}' (ID: {$this->task->id}) is already in its final state: '{$currentStatus}'");
+            Log::info("Task '{$this->task->title}' (ID: {$this->task->id}) is already in its final state: '{$currentStatus}'");
             return;
         }
 
         $this->task->status = $nextStatus;
         $this->task->save();
 
-        Log::info("🔁 Task '{$this->task->title}' status updated: '{$currentStatus}' → '{$nextStatus}'");
+        Log::info("Task '{$this->task->title}' status updated: '{$currentStatus}' → '{$nextStatus}'");
 
         $user = $this->task->user;
 
         if ($user) {
             $user->notify(new TaskStatusChanged($this->task));
-            Log::info("📩 Notification sent to user ID {$user->id} ({$user->email})");
+            Log::info("Notification sent to user ID {$user->id} ({$user->email})");
         } else {
-            Log::warning("⚠️ No user found for task '{$this->task->title}' (ID: {$this->task->id})");
+            Log::warning("No user found for task '{$this->task->title}' (ID: {$this->task->id})");
         }
     }
 }
